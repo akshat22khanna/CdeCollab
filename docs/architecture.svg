@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="640" viewBox="0 0 1160 640" fill="none">
+  <rect width="1160" height="640" fill="#f8fafc"/>
+  <rect x="40" y="90" width="250" height="120" rx="14" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="60" y="128" fill="#0f172a" font-family="Arial" font-size="20" font-weight="700">Next.js Frontend</text>
+  <text x="60" y="158" fill="#334155" font-family="Arial" font-size="14">Monaco editor, dashboard, auth</text>
+  <rect x="360" y="40" width="300" height="140" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="380" y="80" fill="#0f172a" font-family="Arial" font-size="20" font-weight="700">Node.js API + WebSocket</text>
+  <text x="380" y="108" fill="#334155" font-family="Arial" font-size="14">JWT auth, rooms, sessions</text>
+  <text x="380" y="130" fill="#334155" font-family="Arial" font-size="14">Socket.io room sync</text>
+  <rect x="740" y="40" width="220" height="140" rx="14" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="760" y="80" fill="#0f172a" font-family="Arial" font-size="20" font-weight="700">FastAPI ML</text>
+  <text x="760" y="108" fill="#334155" font-family="Arial" font-size="14">Complexity estimator</text>
+  <text x="760" y="130" fill="#334155" font-family="Arial" font-size="14">Hints + bug heuristics</text>
+  <rect x="360" y="250" width="220" height="130" rx="14" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="380" y="290" fill="#0f172a" font-family="Arial" font-size="20" font-weight="700">PostgreSQL</text>
+  <text x="380" y="318" fill="#334155" font-family="Arial" font-size="14">users, rooms, sessions</text>
+  <text x="380" y="338" fill="#334155" font-family="Arial" font-size="14">code_snapshots</text>
+  <rect x="640" y="250" width="220" height="130" rx="14" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+  <text x="660" y="290" fill="#0f172a" font-family="Arial" font-size="20" font-weight="700">Redis Pub/Sub</text>
+  <text x="660" y="318" fill="#334155" font-family="Arial" font-size="14">Room state cache</text>
+  <text x="660" y="338" fill="#334155" font-family="Arial" font-size="14">Broadcast fan-out</text>
+  <path d="M290 130 L360 110" stroke="#0f172a" stroke-width="2"/>
+  <path d="M660 110 L740 110" stroke="#0f172a" stroke-width="2"/>
+  <path d="M500 180 L500 250" stroke="#0f172a" stroke-width="2"/>
+  <path d="M610 180 L720 250" stroke="#0f172a" stroke-width="2"/>
+  <text x="40" y="40" fill="#0f172a" font-family="Arial" font-size="28" font-weight="700">CodeCollab Architecture</text>
+</svg>

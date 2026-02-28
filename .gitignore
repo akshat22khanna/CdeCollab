@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.env
+.env.local
+api.out.log
+api.err.log
+web.out.log
+web.err.log
