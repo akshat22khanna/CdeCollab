@@ -6,3 +6,5 @@ api.out.log
 api.err.log
 web.out.log
 web.err.log
+__pycache__/
+*.pyc
