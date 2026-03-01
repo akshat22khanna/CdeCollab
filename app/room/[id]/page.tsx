@@ -41,6 +41,8 @@ export default function RoomPage() {
   const [code, setCode] = useState('// Start coding...');
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [analysisError, setAnalysisError] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [lastAnalyzedAt, setLastAnalyzedAt] = useState<string>('');
   const [participants, setParticipants] = useState<string[]>([]);
   const [status, setStatus] = useState('connecting');
 
@@ -111,6 +113,7 @@ export default function RoomPage() {
 
   async function runAnalysis(nextCode?: string, nextLanguage?: string) {
     try {
+      setIsAnalyzing(true);
       setAnalysisError('');
       const res = await api('/api/ai/analyze', {
         method: 'POST',
@@ -122,8 +125,11 @@ export default function RoomPage() {
         }),
       });
       setAnalysis(res.analysis);
+      setLastAnalyzedAt(new Date().toLocaleTimeString());
     } catch (e: any) {
       setAnalysisError(e?.message || 'Analysis request failed');
+    } finally {
+      setIsAnalyzing(false);
     }
   }
 
@@ -219,11 +225,16 @@ export default function RoomPage() {
           <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <div className="flex items-center justify-between">
               <h2 className="font-medium text-slate-900">AI Mentor</h2>
-              <button className="rounded bg-sky-700 px-3 py-1.5 text-xs text-white" onClick={() => runAnalysis()}>
-                Analyze Now
+              <button
+                className="rounded bg-sky-700 px-3 py-1.5 text-xs text-white disabled:opacity-60"
+                onClick={() => runAnalysis()}
+                disabled={isAnalyzing}
+              >
+                {isAnalyzing ? 'Analyzing...' : 'Analyze Now'}
               </button>
             </div>
             <p className="mt-3 text-sm text-slate-700">{analysis?.hint || 'Type code and wait 800ms for automatic hints.'}</p>
+            {lastAnalyzedAt ? <p className="mt-2 text-xs text-slate-500">Last analyzed at {lastAnalyzedAt}</p> : null}
             {analysisError ? <p className="mt-2 text-xs text-red-600">{analysisError}</p> : null}
             <div className="mt-3 text-sm text-slate-600">
               <p>Complexity: {analysis?.complexity || '-'}</p>
