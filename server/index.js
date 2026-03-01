@@ -32,6 +32,16 @@ app.get('/health', (_req, res) => {
 const pool = new Pool({ connectionString: POSTGRES_URL });
 const redisPub = new Redis(REDIS_URL);
 const redisSub = new Redis(REDIS_URL);
+let redisHealthy = true;
+
+redisPub.on('error', (err) => {
+  redisHealthy = false;
+  console.error('Redis publisher error:', err.message);
+});
+redisSub.on('error', (err) => {
+  redisHealthy = false;
+  console.error('Redis subscriber error:', err.message);
+});
 
 const roomSockets = new Map();
 const lastSnapshotAt = new Map();
@@ -115,7 +125,12 @@ async function loadRoomDoc(roomId) {
 
   const doc = new Y.Doc();
   const key = `room:yjs:${roomId}`;
-  const savedUpdate = await redisPub.get(key);
+  let savedUpdate = null;
+  try {
+    savedUpdate = await redisPub.get(key);
+  } catch {
+    savedUpdate = null;
+  }
 
   if (savedUpdate) {
     const updateBytes = Buffer.from(savedUpdate, 'base64');
@@ -126,7 +141,9 @@ async function loadRoomDoc(roomId) {
     if (initialCode) {
       const yText = doc.getText('monaco');
       yText.insert(0, initialCode);
-      await redisPub.set(key, Buffer.from(Y.encodeStateAsUpdate(doc)).toString('base64'));
+      try {
+        await redisPub.set(key, Buffer.from(Y.encodeStateAsUpdate(doc)).toString('base64'));
+      } catch {}
     }
   }
 
@@ -247,7 +264,10 @@ app.post('/api/ai/analyze', auth, async (req, res) => {
   }
 });
 
-redisSub.psubscribe('room:*');
+redisSub.psubscribe('room:*').catch((err) => {
+  redisHealthy = false;
+  console.error('Redis psubscribe failed:', err.message);
+});
 redisSub.on('pmessage', (_pattern, channel, message) => {
   const roomId = Number(channel.split(':')[1]);
   io.to(`room:${roomId}`).emit('room:code', JSON.parse(message));
@@ -299,14 +319,22 @@ io.on('connection', (socket) => {
     }
 
     const merged = Buffer.from(Y.encodeStateAsUpdate(doc)).toString('base64');
-    await redisPub.set(`room:yjs:${roomId}`, merged);
+    try {
+      await redisPub.set(`room:yjs:${roomId}`, merged);
+    } catch {}
 
     socket.to(`room:${roomId}`).emit('room:yjs:update', { update });
   });
 
   socket.on('room:code', async ({ roomId, code, language }) => {
     await persistRoomCode(roomId, language, code);
-    await redisPub.publish(`room:${roomId}`, JSON.stringify({ code, language }));
+    if (redisHealthy) {
+      try {
+        await redisPub.publish(`room:${roomId}`, JSON.stringify({ code, language }));
+      } catch {}
+    } else {
+      io.to(`room:${roomId}`).emit('room:code', { code, language });
+    }
   });
 
   socket.on('disconnect', () => {
