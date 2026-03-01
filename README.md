@@ -6,6 +6,12 @@ CodeCollab is a lightweight LeetCode-meets-Google-Docs interview platform:
 - An AI mentor (FastAPI service) provides complexity estimates, bug heuristics, and hints.
 - Sessions and snapshots are persisted in PostgreSQL and visualized in a dashboard.
 
+## Live App
+
+- App URL: https://akshat22khanna-codecollab-web.onrender.com
+- Deploy from GitHub:
+  [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/akshat22khanna/CdeCollab)
+
 ## Architecture Diagram
 
 ![CodeCollab architecture](./docs/architecture.svg)

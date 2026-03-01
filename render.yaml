@@ -1,0 +1,58 @@
+services:
+  - type: web
+    name: akshat22khanna-codecollab-web
+    runtime: docker
+    dockerfilePath: ./Dockerfile.web
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+      - key: NEXT_PUBLIC_WS_URL
+        sync: false
+
+  - type: web
+    name: akshat22khanna-codecollab-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile.api
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: POSTGRES_URL
+        fromDatabase:
+          name: akshat22khanna-codecollab-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: akshat22khanna-codecollab-redis
+          property: connectionString
+      - key: ML_SERVICE_URL
+        sync: false
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: SNAPSHOT_INTERVAL_SECONDS
+        value: "30"
+
+  - type: web
+    name: akshat22khanna-codecollab-ml
+    runtime: docker
+    dockerfilePath: ./Dockerfile.ml
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+
+  - type: redis
+    name: akshat22khanna-codecollab-redis
+    plan: free
+    ipAllowList: []
+
+databases:
+  - name: akshat22khanna-codecollab-postgres
+    databaseName: codecollab
+    user: codecollab
+    plan: free
