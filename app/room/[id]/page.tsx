@@ -7,7 +7,7 @@ import * as Y from 'yjs';
 import { useParams } from 'next/navigation';
 import { api } from '@/lib/client-api';
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'http://localhost:4600';
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'https://akshat22khanna-codecollab-api.onrender.com';
 const Editor = dynamic(() => import('@monaco-editor/react'), { ssr: false });
 
 type Room = { id: number; title: string; language: string; current_code: string };

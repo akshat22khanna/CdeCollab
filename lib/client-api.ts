@@ -1,5 +1,5 @@
 const TOKEN_KEY = 'codecollab_token';
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4600';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://akshat22khanna-codecollab-api.onrender.com';
 
 export function getToken() {
   if (typeof window === 'undefined') return null;
